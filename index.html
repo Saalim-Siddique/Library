@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Library Management - Offline</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">📚 Library</div>
+      <nav>
+        <a href="#" data-view="dashboard" class="active">Dashboard</a>
+        <a href="#" data-view="books">Books</a>
+        <a href="#" data-view="members">Members</a>
+        <a href="#" data-view="issue">Issue Book</a>
+        <a href="#" data-view="records">Records</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <button id="themeToggle" class="btn">Toggle Theme</button>
+        <div class="small">Offline - localStorage only</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search">
+          <input id="globalSearch" placeholder="Search books, members, records...">
+        </div>
+        <div class="actions">
+          <button id="exportBtn" class="btn">Export JSON</button>
+          <label class="btn import-btn">
+            Import
+            <input id="importInput" type="file" accept="application/json" hidden>
+          </label>
+        </div>
+      </header>
+
+      <section class="content" id="content">
+        <!-- Dashboard -->
+        <div id="dashboard" class="view">
+          <h2>Dashboard</h2>
+          <div class="cards">
+            <div class="card">
+              <div class="card-title">Total Books</div>
+              <div id="totalBooks" class="card-value">0</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Total Members</div>
+              <div id="totalMembers" class="card-value">0</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Issued Books</div>
+              <div id="issuedCount" class="card-value">0</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Returned Books</div>
+              <div id="returnedCount" class="card-value">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Books -->
+        <div id="books" class="view hidden">
+          <div class="view-header">
+            <h2>Books</h2>
+            <div>
+              <button id="addBookBtn" class="btn">+ Add Book</button>
+              <select id="bookSort">
+                <option value="title">Sort by Title</option>
+                <option value="author">Sort by Author</option>
+                <option value="category">Sort by Category</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <input id="bookSearch" placeholder="Search books by title, author, category">
+            <table id="booksTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Category</th>
+                  <th>Qty</th>
+                  <th>Available</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="booksPagination"></div>
+        </div>
+
+        <!-- Members -->
+        <div id="members" class="view hidden">
+          <div class="view-header">
+            <h2>Members</h2>
+            <div>
+              <button id="addMemberBtn" class="btn">+ Add Member</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <input id="memberSearch" placeholder="Search members by name, phone, email">
+            <table id="membersTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="membersPagination"></div>
+        </div>
+
+        <!-- Issue Book -->
+        <div id="issue" class="view hidden">
+          <h2>Issue Book</h2>
+          <div class="card padded">
+            <form id="issueForm">
+              <div class="form-row">
+                <label>Member</label>
+                <select id="issueMember"></select>
+              </div>
+              <div class="form-row">
+                <label>Book</label>
+                <select id="issueBook"></select>
+              </div>
+              <div class="form-row">
+                <label>Return Date</label>
+                <input id="issueReturnDate" type="date">
+              </div>
+              <div class="form-row actions">
+                <button type="submit" class="btn">Issue</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Records -->
+        <div id="records" class="view hidden">
+          <div class="view-header">
+            <h2>Records</h2>
+            <div>
+              <select id="recordFilter">
+                <option value="all">All</option>
+                <option value="issued">Issued</option>
+                <option value="returned">Returned</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <input id="recordSearch" placeholder="Search records">
+            <table id="recordsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Member</th>
+                  <th>Book</th>
+                  <th>Issue Date</th>
+                  <th>Return Date</th>
+                  <th>Status</th>
+                  <th>Fine</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <div id="modal" class="modal hidden" role="dialog">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toasts" class="toasts"></div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
